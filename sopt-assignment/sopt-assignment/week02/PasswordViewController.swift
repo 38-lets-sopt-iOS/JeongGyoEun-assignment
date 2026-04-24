@@ -126,8 +126,7 @@ final class PasswordViewController: UIViewController {
     private func setUI() {
         [titleLabel, passwordDescriptionLabel, passwordTextField,
          validationImageView, validationLabel, nicknameSettingButton, nextButton].forEach {
-            view.addSubview($0)
-        }
+            view.addSubview($0)}
         
         rightContainerView.addSubview(clearButton)
         rightContainerView.addSubview(eyeButton)
@@ -137,6 +136,9 @@ final class PasswordViewController: UIViewController {
         passwordTextField.addTarget(self, action: #selector(passwordTextFieldDidChange), for: .editingChanged)
         clearButton.addTarget(self, action: #selector(clearButtonDidTap), for: .touchUpInside)
         eyeButton.addTarget(self, action: #selector(eyeButtonDidTap), for: .touchUpInside)
+        
+        nicknameSettingButton.addTarget(self, action: #selector(nicknameSettingButtonDidTap), for: .touchUpInside)
+        
     }
     
     private func setLayout() {
@@ -239,5 +241,29 @@ final class PasswordViewController: UIViewController {
     @objc private func eyeButtonDidTap() {
         eyeButton.isSelected.toggle()
         passwordTextField.isSecureTextEntry = !eyeButton.isSelected
+    }
+    
+    @objc private func nicknameSettingButtonDidTap() {
+        let bottomSheetVC = NicknameBottomSheetViewController()
+        if let sheet = bottomSheetVC.sheetPresentationController {
+            if #available(iOS 16.0, *) { // iOS 16 이상
+                let customDetent = UISheetPresentationController.Detent.custom { context in
+                    return context.maximumDetentValue * 0.5
+                }
+                sheet.detents = [customDetent]
+            } else { // iOS 15 이하
+                sheet.detents = [.medium()]
+            }
+        }
+        bottomSheetVC.onNicknameConfigured = { [weak self] nickname in
+            let attributes: [NSAttributedString.Key: Any] = [
+                .font: UIFont.body2 ?? UIFont.systemFont(ofSize: 14),
+                .foregroundColor: UIColor.appWhite,
+                .underlineStyle: NSUnderlineStyle.single.rawValue
+            ]
+            let attributedTitle = NSAttributedString(string: nickname, attributes: attributes)
+            self?.nicknameSettingButton.setAttributedTitle(attributedTitle, for: .normal)
+        }
+        present(bottomSheetVC, animated: true)
     }
 }
