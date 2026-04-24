@@ -9,6 +9,7 @@ import UIKit
 import SnapKit
 
 final class PasswordViewController: UIViewController {
+    private var userNickname: String?
     
     private let titleLabel: UILabel = {
         let label = UILabel()
@@ -138,7 +139,7 @@ final class PasswordViewController: UIViewController {
         eyeButton.addTarget(self, action: #selector(eyeButtonDidTap), for: .touchUpInside)
         
         nicknameSettingButton.addTarget(self, action: #selector(nicknameSettingButtonDidTap), for: .touchUpInside)
-        
+        nextButton.addTarget(self, action: #selector(pushToWelcomeVC), for: .touchUpInside)
     }
     
     private func setLayout() {
@@ -254,8 +255,11 @@ final class PasswordViewController: UIViewController {
             } else { // iOS 15 이하
                 sheet.detents = [.medium()]
             }
+            sheet.prefersGrabberVisible = true
         }
         bottomSheetVC.onNicknameConfigured = { [weak self] nickname in
+            self?.userNickname = nickname
+            
             let attributes: [NSAttributedString.Key: Any] = [
                 .font: UIFont.body2 ?? UIFont.systemFont(ofSize: 14),
                 .foregroundColor: UIColor.appWhite,
@@ -265,5 +269,11 @@ final class PasswordViewController: UIViewController {
             self?.nicknameSettingButton.setAttributedTitle(attributedTitle, for: .normal)
         }
         present(bottomSheetVC, animated: true)
+    }
+    
+    @objc private func pushToWelcomeVC() {
+        let welcomeController = WelcomeViewController()
+        welcomeController.nickname = self.userNickname
+        self.navigationController?.pushViewController(welcomeController, animated: true)
     }
 }
