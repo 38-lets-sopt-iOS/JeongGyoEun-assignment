@@ -15,7 +15,7 @@ final class NicknameBottomSheetViewController: UIViewController {
         let label = UILabel()
         label.text = "닉네임을 입력해주세요"
         label.textColor = .appWhite
-        label.font = .subhead2
+        label.font = .subhead1
         return label
     }()
     
@@ -51,7 +51,7 @@ final class NicknameBottomSheetViewController: UIViewController {
         let button = UIButton()
         button.setTitle("완료", for: .normal)
         button.setTitleColor(.appGray200, for: .normal)
-        button.titleLabel?.font = .subhead2
+        button.titleLabel?.font = .subhead1
         button.backgroundColor = .appGray600
         button.layer.cornerRadius = 10
         button.isEnabled = false
@@ -60,7 +60,10 @@ final class NicknameBottomSheetViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.backgroundColor = .gray400
+        view.backgroundColor = .appGray400?.withAlphaComponent(0.2)
+        view.layer.cornerRadius = 12
+        view.layer.maskedCorners = [.layerMinXMinYCorner, .layerMaxXMinYCorner]
+        view.clipsToBounds = true
         setUI()
         setLayout()
     }
@@ -76,13 +79,13 @@ final class NicknameBottomSheetViewController: UIViewController {
     
     private func setLayout() {
         titleLabel.snp.makeConstraints {
-            $0.top.equalToSuperview().offset(40)
-            $0.leading.equalToSuperview().offset(22)
+            $0.top.equalToSuperview().offset(42)
+            $0.leading.equalToSuperview().offset(24)
         }
         
         nicknameTextField.snp.makeConstraints {
             $0.top.equalTo(titleLabel.snp.bottom).offset(20)
-            $0.leading.trailing.equalToSuperview().inset(22)
+            $0.leading.trailing.equalToSuperview().inset(31)
             $0.height.equalTo(47)
         }
         
