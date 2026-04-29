@@ -11,6 +11,11 @@ import SnapKit
 final class WelcomeViewController: UIViewController {
     
     var nickname: String?
+    func configureNickname(_ nickname: String?) {
+
+        self.nickname = nickname
+
+    }
     
     private let logoImageView: UIImageView = {
         let imageView = UIImageView()

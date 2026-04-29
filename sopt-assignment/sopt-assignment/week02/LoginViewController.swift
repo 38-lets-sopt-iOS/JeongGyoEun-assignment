@@ -50,7 +50,7 @@ final class LoginViewController: UIViewController {
     
     private let clearButton: UIButton = {
         let button = UIButton(type: .system)
-        button.setImage(UIImage(named: "close"), for: .normal)
+        button.setImage(.close, for: .normal)
         button.tintColor = .appGray300
         button.isHidden = true
         return button
@@ -58,7 +58,7 @@ final class LoginViewController: UIViewController {
     
     private let validImageView: UIImageView = {
         let imageView = UIImageView()
-        imageView.image = UIImage(named: "checkOff")
+        imageView.image = .checkOff
         imageView.isHidden = true
         return imageView
     }()
@@ -76,7 +76,6 @@ final class LoginViewController: UIViewController {
         button.backgroundColor = .appGray400
         button.layer.cornerRadius = 10
         button.isEnabled = false
-        button.addTarget(self, action: #selector(nextButtonDidTap), for: .touchUpInside)
         return button
     }()
     
@@ -87,24 +86,25 @@ final class LoginViewController: UIViewController {
         setLayout()
         setRightViewLayout()
         updateEmailState()
+        setAddTarget()
     }
     
     private func setUI() {
-        [titleLabel, descriptionLabel, emailTextField, nextButton].forEach {
-            view.addSubview($0)
-        }
-        
+        view.addSubviews(titleLabel, descriptionLabel, emailTextField, nextButton)
         rightContainerView.addSubview(clearButton)
         rightContainerView.addSubview(validImageView)
         emailTextField.rightView = rightContainerView
-        
+    }
+    
+    private func setAddTarget() {
+        nextButton.addTarget(self, action: #selector(nextButtonDidTap), for: .touchUpInside)
         emailTextField.addTarget(self, action: #selector(emailTextFieldDidChange), for: .editingChanged)
         clearButton.addTarget(self, action: #selector(clearButtonDidTap), for: .touchUpInside)
     }
     
     private func setLayout() {
         titleLabel.snp.makeConstraints {
-            $0.top.equalToSuperview().offset(152)
+            $0.top.equalTo(view.safeAreaLayoutGuide.snp.top).inset(109)
             $0.leading.equalToSuperview().offset(31)
         }
         
@@ -115,20 +115,20 @@ final class LoginViewController: UIViewController {
         
         emailTextField.snp.makeConstraints {
             $0.top.equalTo(descriptionLabel.snp.bottom).offset(26)
-            $0.leading.trailing.equalToSuperview().inset(31)
+            $0.horizontalEdges.equalToSuperview().inset(31)
             $0.height.equalTo(47)
         }
         
         nextButton.snp.makeConstraints {
             $0.leading.trailing.equalToSuperview().inset(22)
             $0.height.equalTo(56)
-            $0.bottom.equalTo(view.safeAreaLayoutGuide.snp.bottom).inset(24)
+            $0.bottom.equalTo(view.safeAreaLayoutGuide.snp.bottom).inset(13)
         }
     }
     
     private func setRightViewLayout() {
         rightContainerView.snp.makeConstraints {
-                $0.width.equalTo(58)
+                $0.width.equalTo(52)
                 $0.height.equalTo(47)
             }
 
@@ -145,15 +145,10 @@ final class LoginViewController: UIViewController {
         }
     }
     
-    private func isValidEmail(_ email: String) -> Bool {
-        let emailRegEx = "[A-Z0-9a-z._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}"
-        return NSPredicate(format: "SELF MATCHES %@", emailRegEx).evaluate(with: email)
-    }
-    
     private func updateEmailState() {
         let text = emailTextField.text ?? ""
         let hasText = !text.isEmpty
-        let isValid = isValidEmail(text)
+        let isValid = text.isValidEmail()
         
         if !hasText {
             clearButton.isHidden = true
@@ -168,12 +163,12 @@ final class LoginViewController: UIViewController {
         validImageView.isHidden = false
         
         if isValid {
-            validImageView.image = UIImage(named: "checkOn")
+            validImageView.image = .checkOn
             nextButton.isEnabled = true
             nextButton.backgroundColor = .appPink
             nextButton.setTitleColor(.appWhite, for: .normal)
         } else {
-            validImageView.image = UIImage(named: "checkOff")
+            validImageView.image = .checkOff
             nextButton.isEnabled = false
             nextButton.backgroundColor = .appGray400
             nextButton.setTitleColor(.appGray200, for: .normal)
@@ -198,6 +193,7 @@ final class LoginViewController: UIViewController {
     
     private func pushToPasswordVC() {
         let passwordViewController = PasswordViewController()
+        passwordViewController.email = emailTextField.text
         self.navigationController?.pushViewController(passwordViewController, animated: true)
     }
 }
