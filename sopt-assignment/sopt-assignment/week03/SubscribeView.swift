@@ -10,7 +10,7 @@ import SnapKit
 import Then
 
 class SubscribeView: UIView {
-        
+    
     let header = UIView().then {
         $0.backgroundColor = .appBlack
     }
@@ -29,7 +29,7 @@ class SubscribeView: UIView {
         $0.backgroundColor = .appPink
         $0.layer.cornerRadius = 10
     }
-
+    
     lazy var collectionView = UICollectionView(
         frame: .zero,
         collectionViewLayout: self.createCompositionalLayout()
@@ -39,7 +39,7 @@ class SubscribeView: UIView {
         $0.contentInset = UIEdgeInsets(top: 151, left: 0, bottom: 100, right: 0)
         $0.contentInsetAdjustmentBehavior = .never
     }
-        
+    
     override init(frame: CGRect) {
         super.init(frame: frame)
         self.backgroundColor = .appBlack
@@ -50,7 +50,7 @@ class SubscribeView: UIView {
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-        
+    
     private func setUI() {
         self.addSubviews(collectionView, header, floatingBannerView)
         header.addSubviews(titleLabel, videoIcon, notificationIcon, profileIcon)
@@ -93,21 +93,76 @@ class SubscribeView: UIView {
             $0.height.equalTo(86)
         }
     }
-        
+    
     private func createCompositionalLayout() -> UICollectionViewLayout {
         return UICollectionViewCompositionalLayout { (sectionIndex, layoutEnvironment) -> NSCollectionLayoutSection? in
-            
-            let itemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .fractionalHeight(1.0))
-            let item = NSCollectionLayoutItem(layoutSize: itemSize)
-            
-            let groupSize = NSCollectionLayoutSize(widthDimension: .absolute(273), heightDimension: .absolute(399))
-            let group = NSCollectionLayoutGroup.horizontal(layoutSize: groupSize, subitems: [item])
-            
-            let section = NSCollectionLayoutSection(group: group)
-            section.orthogonalScrollingBehavior = .groupPagingCentered
-            section.interGroupSpacing = 13
-            section.contentInsets = NSDirectionalEdgeInsets(top: 28, leading: 20, bottom: 45, trailing: 20)
-            return section
+            if sectionIndex == 0 {
+                let itemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .fractionalHeight(1.0))
+                let item = NSCollectionLayoutItem(layoutSize: itemSize)
+                
+                let groupSize = NSCollectionLayoutSize(widthDimension: .absolute(273), heightDimension: .absolute(399))
+                let group = NSCollectionLayoutGroup.horizontal(layoutSize: groupSize, subitems: [item])
+                
+                let section = NSCollectionLayoutSection(group: group)
+                section.orthogonalScrollingBehavior = .groupPagingCentered
+                section.interGroupSpacing = 12
+                section.contentInsets = NSDirectionalEdgeInsets(top: 28, leading: 0, bottom: 45, trailing: 0)
+                return section
+            } else {
+                let itemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .fractionalHeight(1.0))
+                let item = NSCollectionLayoutItem(layoutSize: itemSize)
+                
+                let groupSize = NSCollectionLayoutSize(widthDimension: .absolute(321), heightDimension: .absolute(180))
+                let group = NSCollectionLayoutGroup.horizontal(layoutSize: groupSize, subitems: [item])
+                
+                let section = NSCollectionLayoutSection(group: group)
+                section.orthogonalScrollingBehavior = .groupPagingCentered
+                section.interGroupSpacing = 12
+                section.contentInsets = NSDirectionalEdgeInsets(top: 0, leading: 0, bottom: 45, trailing: 0)
+                
+                let headerSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .absolute(62))
+                let header = NSCollectionLayoutBoundarySupplementaryItem(
+                    layoutSize: headerSize,
+                    elementKind: UICollectionView.elementKindSectionHeader,
+                    alignment: .top
+                )
+                section.boundarySupplementaryItems = [header]
+                
+                return section
+            }
         }
+    }
+}
+
+class SectionHeaderView: UICollectionReusableView {
+    static let identifier = "SectionHeaderView"
+    
+    let sectionTitleLabel = UILabel().then {
+        $0.text = "방금 막 도착한 신상 컨텐츠"
+        $0.textColor = .appWhite
+        $0.font = .head3
+    }
+    
+    let sectionSubTitleLabel = UILabel().then {
+        $0.text = "예능부터 드라마까지!"
+        $0.textColor = .appWhite
+        $0.font = .subhead1
+    }
+        
+    override init(frame: CGRect) {
+        super.init(frame: frame)
+        addSubviews(sectionTitleLabel, sectionSubTitleLabel)
+        sectionTitleLabel.snp.makeConstraints {
+            $0.top.equalToSuperview()
+            $0.leading.equalToSuperview().inset(24)
+        }
+        sectionSubTitleLabel.snp.makeConstraints {
+            $0.top.equalTo(sectionTitleLabel.snp.bottom).offset(3)
+            $0.leading.equalToSuperview().inset(24)
+        }
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError()
     }
 }
