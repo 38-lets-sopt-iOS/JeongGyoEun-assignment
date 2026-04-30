@@ -50,14 +50,15 @@ class WatchaTabbar : UITabBarController {
         appearance.backgroundColor = .appBlack
         appearance.shadowColor = .appGray700
         
-        tabBar.standardAppearance = appearance
-        tabBar.scrollEdgeAppearance = appearance
-        tabBar.tintColor = .appWhite
-        tabBar.barTintColor = .appBlack
-        
         let itemAppearance = UITabBarItemAppearance()
-        itemAppearance.normal.titleTextAttributes = [.font: UIFont.body2]
-        itemAppearance.selected.titleTextAttributes = [.font: UIFont.body2]
+        
+        itemAppearance.normal.iconColor = .appGray400
+        itemAppearance.normal.titleTextAttributes = [.font: UIFont.body2, .foregroundColor: UIColor.appGray400]
+        
+        
+        itemAppearance.selected.iconColor = .appWhite
+        itemAppearance.selected.titleTextAttributes = [.font: UIFont.body2, .foregroundColor: UIColor.appWhite]
+        
         
         appearance.stackedLayoutAppearance = itemAppearance
         appearance.inlineLayoutAppearance = itemAppearance
@@ -65,6 +66,5 @@ class WatchaTabbar : UITabBarController {
         
         tabBar.standardAppearance = appearance
         tabBar.scrollEdgeAppearance = appearance
-        
     }
 }
