@@ -48,10 +48,14 @@ class SubscibeViewController: UIViewController, UICollectionViewDelegate {
         super.viewDidLoad()
         view.backgroundColor = .black
         navigationController?.view.backgroundColor = .black
-        self.navigationController?.navigationBar.isHidden = true
         setDelegate()
         setRegister()
     }
+    
+    override func viewWillAppear(_ animated: Bool) {
+            super.viewWillAppear(animated)
+            self.navigationController?.setNavigationBarHidden(true, animated: animated)
+        }
     
     private func setDelegate() {
         rootView.collectionView.delegate = self
