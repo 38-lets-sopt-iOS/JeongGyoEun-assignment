@@ -39,7 +39,6 @@ class SubscibeViewController: UIViewController, UICollectionViewDelegate {
         UIImage.poster3,
     ]
     
-    
     override func loadView() {
         self.view = rootView
     }
@@ -69,7 +68,7 @@ class SubscibeViewController: UIViewController, UICollectionViewDelegate {
 extension SubscibeViewController: UICollectionViewDataSource {
     
     func numberOfSections(in collectionView: UICollectionView) -> Int {
-        return 3
+        return 4
     }
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {

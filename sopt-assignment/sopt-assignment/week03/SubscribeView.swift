@@ -129,6 +129,29 @@ class SubscribeView: UIView {
                 section.boundarySupplementaryItems = [header]
                 return section
                 
+            } else if sectionIndex == 2 {
+                let itemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .fractionalHeight(1.0))
+                let item = NSCollectionLayoutItem(layoutSize: itemSize)
+                
+                let groupSize = NSCollectionLayoutSize(widthDimension: .absolute(103), heightDimension: .absolute(153))
+                let group = NSCollectionLayoutGroup.horizontal(layoutSize: groupSize, subitems: [item])
+                
+                let section = NSCollectionLayoutSection(group: group)
+                section.orthogonalScrollingBehavior = .continuous
+                section.interGroupSpacing = 13
+                section.contentInsets = NSDirectionalEdgeInsets(top: 0, leading: 0, bottom: 45, trailing: 0)
+                
+                let headerSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .absolute(62))
+                let header = NSCollectionLayoutBoundarySupplementaryItem(
+                    layoutSize: headerSize,
+                    elementKind: UICollectionView.elementKindSectionHeader,
+                    alignment: .top
+                )
+                
+                section.boundarySupplementaryItems = [header]
+                
+                return section
+                
             } else {
                 let itemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .fractionalHeight(1.0))
                 let item = NSCollectionLayoutItem(layoutSize: itemSize)
@@ -139,9 +162,9 @@ class SubscribeView: UIView {
                 let section = NSCollectionLayoutSection(group: group)
                 section.orthogonalScrollingBehavior = .continuous
                 section.interGroupSpacing = 13
-                section.contentInsets = NSDirectionalEdgeInsets(top: 0, leading: 20, bottom: 45, trailing: 20)
+                section.contentInsets = NSDirectionalEdgeInsets(top: 0, leading: 0, bottom: 45, trailing: 0)
                 
-                let headerSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .absolute(62))
+                let headerSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .absolute(39))
                 let header = NSCollectionLayoutBoundarySupplementaryItem(
                     layoutSize: headerSize,
                     elementKind: UICollectionView.elementKindSectionHeader,
