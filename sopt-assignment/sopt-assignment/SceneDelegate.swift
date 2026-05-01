@@ -17,7 +17,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         
         let window = UIWindow(windowScene: windowScene)
         window.backgroundColor = .black
-        let navigationController = UINavigationController(rootViewController: WatchaTabbar())
+        let navigationController = UINavigationController(rootViewController: WelcomeViewController())
         window.rootViewController = navigationController
         window.makeKeyAndVisible()
         self.window = window

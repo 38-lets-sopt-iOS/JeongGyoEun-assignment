@@ -12,9 +12,9 @@ final class WelcomeViewController: UIViewController {
     
     var nickname: String?
     func configureNickname(_ nickname: String?) {
-
+        
         self.nickname = nickname
-
+        
     }
     
     private let logoImageView: UIImageView = {
@@ -60,13 +60,13 @@ final class WelcomeViewController: UIViewController {
     }
     
     private func setAddTarget() {
-            mainButton.addTarget(self, action: #selector(mainButtonDidTap), for: .touchUpInside)
-        }
+        mainButton.addTarget(self, action: #selector(mainButtonDidTap), for: .touchUpInside)
+    }
     
     @objc private func mainButtonDidTap() {
-            let subscribeVC = SubscibeViewController()
-            self.navigationController?.pushViewController(subscribeVC, animated: true)
-        }
+        let tabbarVC = WatchaTabbar()
+        self.navigationController?.setViewControllers([tabbarVC], animated: true)
+    }
     
     private func setLayout() {
         logoImageView.snp.makeConstraints {
