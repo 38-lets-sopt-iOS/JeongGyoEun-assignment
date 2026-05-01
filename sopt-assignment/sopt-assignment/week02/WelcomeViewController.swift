@@ -50,6 +50,7 @@ final class WelcomeViewController: UIViewController {
         view.backgroundColor = .appBlack
         setUI()
         setLayout()
+        setAddTarget()
     }
     
     private func setUI() {
@@ -57,6 +58,15 @@ final class WelcomeViewController: UIViewController {
             view.addSubview($0)
         }
     }
+    
+    private func setAddTarget() {
+            mainButton.addTarget(self, action: #selector(mainButtonDidTap), for: .touchUpInside)
+        }
+    
+    @objc private func mainButtonDidTap() {
+            let subscribeVC = SubscibeViewController()
+            self.navigationController?.pushViewController(subscribeVC, animated: true)
+        }
     
     private func setLayout() {
         logoImageView.snp.makeConstraints {
