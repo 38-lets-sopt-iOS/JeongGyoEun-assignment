@@ -15,7 +15,7 @@ class MainPosterViewCell: UICollectionViewCell {
     private let posterImageView = UIImageView().then {
         $0.contentMode = .scaleAspectFill
         $0.clipsToBounds = true
-        $0.layer.cornerRadius = 8
+        $0.layer.cornerRadius = 12
     }
     
     override init(frame: CGRect) {
