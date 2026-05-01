@@ -11,6 +11,11 @@ import SnapKit
 final class WelcomeViewController: UIViewController {
     
     var nickname: String?
+    func configureNickname(_ nickname: String?) {
+        
+        self.nickname = nickname
+        
+    }
     
     private let logoImageView: UIImageView = {
         let imageView = UIImageView()
@@ -45,12 +50,22 @@ final class WelcomeViewController: UIViewController {
         view.backgroundColor = .appBlack
         setUI()
         setLayout()
+        setAddTarget()
     }
     
     private func setUI() {
         [logoImageView, welcomeLabel, mainButton].forEach {
             view.addSubview($0)
         }
+    }
+    
+    private func setAddTarget() {
+        mainButton.addTarget(self, action: #selector(mainButtonDidTap), for: .touchUpInside)
+    }
+    
+    @objc private func mainButtonDidTap() {
+        let tabbarVC = WatchaTabbar()
+        self.navigationController?.setViewControllers([tabbarVC], animated: true)
     }
     
     private func setLayout() {
