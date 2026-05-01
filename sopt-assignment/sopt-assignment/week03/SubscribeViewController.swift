@@ -39,12 +39,15 @@ class SubscibeViewController: UIViewController, UICollectionViewDelegate {
         UIImage.poster3,
     ]
     
+    
     override func loadView() {
         self.view = rootView
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        view.backgroundColor = .black
+        navigationController?.view.backgroundColor = .black
         self.navigationController?.navigationBar.isHidden = true
         setDelegate()
         setRegister()
@@ -62,13 +65,14 @@ class SubscibeViewController: UIViewController, UICollectionViewDelegate {
                                          forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader,
                                          withReuseIdentifier: SectionHeaderView.identifier)
         rootView.collectionView.register(BasicPosterViewCell.self, forCellWithReuseIdentifier: BasicPosterViewCell.identifier)
+        rootView.collectionView.register(WatchaPartyViewCell.self, forCellWithReuseIdentifier: WatchaPartyViewCell.identifier)
     }
 }
 
 extension SubscibeViewController: UICollectionViewDataSource {
     
     func numberOfSections(in collectionView: UICollectionView) -> Int {
-        return 4
+        return 5
     }
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
@@ -76,7 +80,11 @@ extension SubscibeViewController: UICollectionViewDataSource {
             return mainPosterList.count
         } else if section == 1{
             return horizontalPosterList.count
-        }  else { return basicPosterList.count }  }
+        }
+        else if section == 4{
+            return 3
+        }
+        else { return basicPosterList.count }  }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         
@@ -94,6 +102,28 @@ extension SubscibeViewController: UICollectionViewDataSource {
             }
             cell.dataBind(horizontalPosterList[indexPath.row])
             return cell
+        }
+        
+        else if indexPath.section == 4 {
+            guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: WatchaPartyViewCell.identifier, for: indexPath) as? WatchaPartyViewCell else {
+                return UICollectionViewCell()
+            }
+            
+            if indexPath.row == 0 {
+                cell.dataBind(poster: .horizontalPoster1,
+                              timeText: "오늘 21:13에 시작",
+                              titleText: "# 왕과 사는 남자")
+            } else if indexPath.row == 1 {
+                cell.dataBind(poster: .horizontalPoster2,
+                              timeText: "오늘 22:22 시작",
+                              titleText: "# 파묘")
+            } else if indexPath.row == 2 {
+                cell.dataBind(poster: .horizontalPoster3,
+                              timeText: "오늘 00:23 시작",
+                              titleText: "# 살목지")
+            }
+            return cell
+            
         }
         
         else {
@@ -132,7 +162,7 @@ extension SubscibeViewController: UICollectionViewDataSource {
             else {
                 header.isHidden = true
             }
-
+            
             return header
         }
         return UICollectionReusableView()

@@ -30,6 +30,29 @@ class SubscribeView: UIView {
         $0.layer.cornerRadius = 10
     }
     
+    let bannerImageView = UIImageView().then {
+        $0.image = .ticket
+    }
+    
+    let bannerHeadLabel = UILabel().then {
+        $0.text = "매주 500편 이상 신작 업데이트!"
+        $0.textColor = .appWhite
+        $0.font = .subhead2
+    }
+    
+    let bannerSubHeadLabel = UILabel().then {
+        $0.text = "지금 구독을 시작하고 다양한 콘텐츠를 무제한 감상해보세요"
+        $0.textColor = .appWhite
+        $0.font = .body2
+    }
+    
+    let subscribeButton = UIButton().then {
+        $0.setTitle("구독 시작하기", for: .normal)
+        $0.setTitleColor(.appWhite, for: .normal)
+        $0.titleLabel?.font = .body2
+        $0.layer.borderWidth = 0
+    }
+    
     lazy var collectionView = UICollectionView(
         frame: .zero,
         collectionViewLayout: self.createCompositionalLayout()
@@ -54,6 +77,7 @@ class SubscribeView: UIView {
     private func setUI() {
         self.addSubviews(collectionView, header, floatingBannerView)
         header.addSubviews(titleLabel, videoIcon, notificationIcon, profileIcon)
+        floatingBannerView.addSubviews(bannerImageView, bannerHeadLabel, bannerSubHeadLabel, subscribeButton)
     }
     
     private func setLayout() {
@@ -89,8 +113,30 @@ class SubscribeView: UIView {
         
         floatingBannerView.snp.makeConstraints {
             $0.horizontalEdges.equalToSuperview().inset(12)
-            $0.bottom.equalTo(self.safeAreaLayoutGuide).inset(79)
+            $0.bottom.equalToSuperview().inset(113)
             $0.height.equalTo(86)
+        }
+        
+        bannerImageView.snp.makeConstraints {
+            $0.top.equalToSuperview().inset(11)
+            $0.leading.equalToSuperview().inset(16)
+        }
+        
+        bannerHeadLabel.snp.makeConstraints {
+            $0.top.equalToSuperview().inset(14)
+            $0.leading.equalToSuperview().inset(50)
+        }
+        
+        bannerSubHeadLabel.snp.makeConstraints {
+            $0.top.equalTo(bannerHeadLabel.snp.bottom).offset(3)
+            $0.leading.equalToSuperview().inset(50)
+        }
+        
+        subscribeButton.snp.makeConstraints {
+            $0.bottom.equalToSuperview().inset(10)
+            $0.leading.equalToSuperview().inset(50)
+            $0.width.equalTo(66)
+            $0.height.equalTo(14)
         }
     }
     
@@ -152,7 +198,30 @@ class SubscribeView: UIView {
                 
                 return section
                 
-            } else {
+            }
+            else if sectionIndex == 4 {
+                let itemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .fractionalHeight(1.0))
+                let item = NSCollectionLayoutItem(layoutSize: itemSize)
+                
+                let groupSize = NSCollectionLayoutSize(widthDimension: .absolute(196), heightDimension: .absolute(185))
+                let group = NSCollectionLayoutGroup.horizontal(layoutSize: groupSize, subitems: [item])
+                
+                let section = NSCollectionLayoutSection(group: group)
+                section.orthogonalScrollingBehavior = .continuous
+                section.interGroupSpacing = 12
+                section.contentInsets = NSDirectionalEdgeInsets(top: 0, leading: 0, bottom: 100, trailing: 0)
+                let headerSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .absolute(39))
+                let header = NSCollectionLayoutBoundarySupplementaryItem(
+                    layoutSize: headerSize,
+                    elementKind: UICollectionView.elementKindSectionHeader,
+                    alignment: .top
+                )
+                section.boundarySupplementaryItems = [header]
+                
+                return section
+                
+            }
+            else {
                 let itemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .fractionalHeight(1.0))
                 let item = NSCollectionLayoutItem(layoutSize: itemSize)
                 
