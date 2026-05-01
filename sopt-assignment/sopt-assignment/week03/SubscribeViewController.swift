@@ -11,11 +11,11 @@ class SubscibeViewController: UIViewController, UICollectionViewDelegate {
     private let rootView = SubscribeView()
     
     private let mainPosterList: [UIImage?] = [
-        UIImage(named: "poster1"),
-        UIImage(named: "poster2"),
-        UIImage(named: "poster3"),
-        UIImage(named: "poster4"),
-        UIImage(named: "poster1")
+        UIImage.poster1,
+        UIImage.poster2,
+        UIImage.poster3,
+        UIImage.poster4,
+        UIImage.poster1,
     ]
     
     private let horizontalPosterList: [UIImage?] = [
@@ -26,13 +26,27 @@ class SubscibeViewController: UIViewController, UICollectionViewDelegate {
         UIImage.horizontalPoster1,
     ]
     
+    private let basicPosterList: [UIImage?] = [
+        UIImage.poster4,
+        UIImage.poster3,
+        UIImage.poster2,
+        UIImage.poster1,
+        UIImage.poster4,
+        UIImage.poster3,
+        UIImage.poster2,
+        UIImage.poster1,
+        UIImage.poster4,
+        UIImage.poster3,
+    ]
+    
+    
     override func loadView() {
         self.view = rootView
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+        self.navigationController?.navigationBar.isHidden = true
         setDelegate()
         setRegister()
     }
@@ -48,34 +62,50 @@ class SubscibeViewController: UIViewController, UICollectionViewDelegate {
         rootView.collectionView.register(SectionHeaderView.self,
                                          forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader,
                                          withReuseIdentifier: SectionHeaderView.identifier)
+        rootView.collectionView.register(BasicPosterViewCell.self, forCellWithReuseIdentifier: BasicPosterViewCell.identifier)
     }
 }
 
 extension SubscibeViewController: UICollectionViewDataSource {
     
     func numberOfSections(in collectionView: UICollectionView) -> Int {
-        return 2
+        return 3
     }
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         if section == 0 {
             return mainPosterList.count
-        } else {
+        } else if section == 1{
             return horizontalPosterList.count
-        }    }
+        }  else { return basicPosterList.count }  }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         
-        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: MainPosterViewCell.identifier, for: indexPath) as? MainPosterViewCell else {
-            return UICollectionViewCell()
+        if indexPath.section == 0 {
+            guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: MainPosterViewCell.identifier, for: indexPath) as? MainPosterViewCell else {
+                return UICollectionViewCell()
+            }
+            cell.dataBind(mainPosterList[indexPath.row])
+            return cell
         }
         
-        if indexPath.section == 0 {
-            cell.dataBind(mainPosterList[indexPath.row])
-        } else {
+        else if indexPath.section == 1 {
+            guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: HorizontalPosterViewCell.identifier, for: indexPath) as? HorizontalPosterViewCell else {
+                return UICollectionViewCell()
+            }
             cell.dataBind(horizontalPosterList[indexPath.row])
+            return cell
         }
-        return cell
+        
+        else {
+            guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: BasicPosterViewCell.identifier, for: indexPath) as? BasicPosterViewCell else {
+                return UICollectionViewCell()
+            }
+            if indexPath.row < basicPosterList.count {
+                cell.dataBind(basicPosterList[indexPath.row])
+            }
+            return cell
+        }
     }
     
     func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
@@ -89,28 +119,25 @@ extension SubscibeViewController: UICollectionViewDataSource {
             }
             
             if indexPath.section == 1 {
-                header.sectionTitleLabel.text = "방금 막 도착한 신상 컨텐츠"
-                header.sectionSubTitleLabel.text = "예능부터 드라마까지!"
-                header.isHidden = false
-            } else if indexPath.section == 2 {
-                header.sectionSubTitleLabel.text = "예능부터 드라마까지!"
-                header.isHidden = false
+                header.configure(title: "방금 막 도착한 신상 컨텐츠", subTitle: "예능부터 드라마까지!", showIcon: false)
+            }
+            else if indexPath.section == 2 {
+                header.configure(title: "", subTitle: "예능부터 드라마까지!", showIcon: true)
             }
             else if indexPath.section == 3 {
-                header.sectionTitleLabel.text = "공개 예정 콘텐츠"
-                header.isHidden = false
+                header.configure(title: "공개 예정 콘텐츠", subTitle: "", showIcon: false)
             }
             else if indexPath.section == 4 {
-                header.sectionTitleLabel.text = "왓챠 파티"
-                header.isHidden = false
+                header.configure(title: "왓챠 파티", subTitle: "", showIcon: false)
             }
             else {
                 header.isHidden = true
             }
+
             return header
         }
         return UICollectionReusableView()
     }
-    
-    
 }
+
+

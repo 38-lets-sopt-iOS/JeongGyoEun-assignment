@@ -108,7 +108,7 @@ class SubscribeView: UIView {
                 section.interGroupSpacing = 12
                 section.contentInsets = NSDirectionalEdgeInsets(top: 28, leading: 0, bottom: 45, trailing: 0)
                 return section
-            } else {
+            } else if sectionIndex == 1 {
                 let itemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .fractionalHeight(1.0))
                 let item = NSCollectionLayoutItem(layoutSize: itemSize)
                 
@@ -127,42 +127,32 @@ class SubscribeView: UIView {
                     alignment: .top
                 )
                 section.boundarySupplementaryItems = [header]
+                return section
+                
+            } else {
+                let itemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .fractionalHeight(1.0))
+                let item = NSCollectionLayoutItem(layoutSize: itemSize)
+                
+                let groupSize = NSCollectionLayoutSize(widthDimension: .absolute(103), heightDimension: .absolute(153))
+                let group = NSCollectionLayoutGroup.horizontal(layoutSize: groupSize, subitems: [item])
+                
+                let section = NSCollectionLayoutSection(group: group)
+                section.orthogonalScrollingBehavior = .continuous
+                section.interGroupSpacing = 13
+                section.contentInsets = NSDirectionalEdgeInsets(top: 0, leading: 20, bottom: 45, trailing: 20)
+                
+                let headerSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .absolute(62))
+                let header = NSCollectionLayoutBoundarySupplementaryItem(
+                    layoutSize: headerSize,
+                    elementKind: UICollectionView.elementKindSectionHeader,
+                    alignment: .top
+                )
+                
+                section.boundarySupplementaryItems = [header]
                 
                 return section
+                
             }
         }
-    }
-}
-
-class SectionHeaderView: UICollectionReusableView {
-    static let identifier = "SectionHeaderView"
-    
-    let sectionTitleLabel = UILabel().then {
-        $0.text = "방금 막 도착한 신상 컨텐츠"
-        $0.textColor = .appWhite
-        $0.font = .head3
-    }
-    
-    let sectionSubTitleLabel = UILabel().then {
-        $0.text = "예능부터 드라마까지!"
-        $0.textColor = .appWhite
-        $0.font = .subhead1
-    }
-        
-    override init(frame: CGRect) {
-        super.init(frame: frame)
-        addSubviews(sectionTitleLabel, sectionSubTitleLabel)
-        sectionTitleLabel.snp.makeConstraints {
-            $0.top.equalToSuperview()
-            $0.leading.equalToSuperview().inset(24)
-        }
-        sectionSubTitleLabel.snp.makeConstraints {
-            $0.top.equalTo(sectionTitleLabel.snp.bottom).offset(3)
-            $0.leading.equalToSuperview().inset(24)
-        }
-    }
-    
-    required init?(coder: NSCoder) {
-        fatalError()
     }
 }
