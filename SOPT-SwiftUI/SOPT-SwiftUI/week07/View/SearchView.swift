@@ -1,5 +1,5 @@
 //
-//  ContentView.swift
+//  SearchView.swift
 //  SOPT-SwiftUI
 //
 //  Created by 정교은 on 5/29/26.
@@ -7,12 +7,9 @@
 
 import SwiftUI
 
-struct ContentView: View {
+struct SearchView: View {
     var body: some View {
-        WelcomeView()
+        Color("appBlack")
+            .ignoresSafeArea()
     }
-}
-
-#Preview {
-    ContentView()
 }

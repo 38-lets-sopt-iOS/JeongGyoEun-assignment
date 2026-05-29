@@ -1,5 +1,5 @@
 //
-//  ContentView.swift
+//  LibraryView.swift
 //  SOPT-SwiftUI
 //
 //  Created by 정교은 on 5/29/26.
@@ -7,12 +7,9 @@
 
 import SwiftUI
 
-struct ContentView: View {
+struct LibraryView: View {
     var body: some View {
-        WelcomeView()
+        Color("appBlack")
+            .ignoresSafeArea()
     }
-}
-
-#Preview {
-    ContentView()
 }
