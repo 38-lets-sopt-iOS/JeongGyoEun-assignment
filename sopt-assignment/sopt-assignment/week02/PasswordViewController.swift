@@ -9,7 +9,8 @@ import UIKit
 import SnapKit
 
 final class PasswordViewController: UIViewController {
-    private var userNickname: String?
+    var email: String?
+    private var nickname: String?
     
     private let titleLabel: UILabel = {
         let label = UILabel()
@@ -22,10 +23,9 @@ final class PasswordViewController: UIViewController {
     
     private lazy var passwordDescriptionLabel: UILabel = {
         let label = UILabel()
-        label.text = "결제 등 중요 정보 알림, 로그인, 비밀번호 찾기에 필요해요.\n사용 중인 이메일을 입력해주세요"
+        label.text = "\(email ?? "이메일")로 가입 중"
         label.font = .body1
         label.textColor = .appGray200
-        label.numberOfLines = 2
         return label
     }()
     
@@ -72,15 +72,15 @@ final class PasswordViewController: UIViewController {
     
     private let eyeButton: UIButton = {
         let button = UIButton(type: .custom)
-        button.setImage(UIImage(named: "eyeOff"), for: .normal)
-        button.setImage(UIImage(named: "eyeOn"), for: .selected)
+        button.setImage(.eyeOff, for: .normal)
+        button.setImage(.eyeOn, for: .selected)
         button.isHidden = true
         return button
     }()
     
     private let validationImageView: UIImageView = {
         let imageView = UIImageView()
-        imageView.image = UIImage(named: "enableOff")
+        imageView.image = .enableOff
         return imageView
     }()
     
@@ -94,6 +94,7 @@ final class PasswordViewController: UIViewController {
     
     private let nicknameSettingButton: UIButton = {
         let button = UIButton(type: .system)
+        button.textInputMode
         
         let attributes: [NSAttributedString.Key: Any] = [
             .font: UIFont.body2,
@@ -118,33 +119,34 @@ final class PasswordViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.backgroundColor = .appBlack
+        view.backgroundColor = .black
         setUI()
         setLayout()
         setRightViewLayout()
+        setAddTarget()
     }
     
     private func setUI() {
-        [titleLabel, passwordDescriptionLabel, passwordTextField,
-         validationImageView, validationLabel, nicknameSettingButton, nextButton].forEach {
-            view.addSubview($0)}
+        view.addSubviews(titleLabel, passwordDescriptionLabel, passwordTextField,
+                         validationImageView, validationLabel, nicknameSettingButton, nextButton)
         
         rightContainerView.addSubview(clearButton)
         rightContainerView.addSubview(eyeButton)
         passwordTextField.rightView = rightContainerView
         passwordTextField.rightViewMode = .always
-        
+    }
+    
+    private func setAddTarget() {
         passwordTextField.addTarget(self, action: #selector(passwordTextFieldDidChange), for: .editingChanged)
         clearButton.addTarget(self, action: #selector(clearButtonDidTap), for: .touchUpInside)
         eyeButton.addTarget(self, action: #selector(eyeButtonDidTap), for: .touchUpInside)
-        
         nicknameSettingButton.addTarget(self, action: #selector(nicknameSettingButtonDidTap), for: .touchUpInside)
         nextButton.addTarget(self, action: #selector(pushToWelcomeVC), for: .touchUpInside)
     }
     
     private func setLayout() {
         titleLabel.snp.makeConstraints {
-            $0.top.equalToSuperview().offset(152)
+            $0.top.equalTo(view.safeAreaLayoutGuide.snp.top).inset(109)
             $0.leading.equalToSuperview().offset(31)
         }
         
@@ -178,7 +180,7 @@ final class PasswordViewController: UIViewController {
         nextButton.snp.makeConstraints {
             $0.leading.trailing.equalToSuperview().inset(22)
             $0.height.equalTo(56)
-            $0.bottom.equalTo(view.safeAreaLayoutGuide.snp.bottom).inset(24)
+            $0.bottom.equalTo(view.safeAreaLayoutGuide.snp.bottom).inset(13)
         }
     }
     
@@ -196,33 +198,28 @@ final class PasswordViewController: UIViewController {
         
         clearButton.snp.makeConstraints {
             $0.centerY.equalToSuperview()
-            $0.trailing.equalTo(eyeButton.snp.leading).offset(-1)
+            $0.trailing.equalTo(eyeButton.snp.leading).offset(-4)
             $0.width.height.equalTo(24)
         }
     }
     
-    private func isValidPassword(_ password: String) -> Bool {
-        // 영문, 숫자, 특수문자 포함 10글자 이상 정규식
-        let passwordRegEx = "^(?=.*[A-Za-z])(?=.*[0-9])(?=.*[!@#$%^&*()_+=-]).{10,}$"
-        return NSPredicate(format: "SELF MATCHES %@", passwordRegEx).evaluate(with: password)
-    }
     
     private func updatePasswordState() {
         let text = passwordTextField.text ?? ""
         let hasText = !text.isEmpty
-        let isValid = isValidPassword(text)
+        let isValid = text.isValidPassword()
         
         clearButton.isHidden = !hasText
         eyeButton.isHidden = !hasText
         
         if isValid {
-            validationImageView.image = UIImage(named: "enableOn")
+            validationImageView.image = .enableOn
             validationLabel.textColor = .appGreen
             nextButton.isEnabled = true
             nextButton.backgroundColor = .appPink
             nextButton.setTitleColor(.appWhite, for: .normal)
         } else {
-            validationImageView.image = UIImage(named: "enableOff")
+            validationImageView.image = .enableOff
             validationLabel.textColor = .appGray100
             nextButton.isEnabled = false
             nextButton.backgroundColor = .appGray400
@@ -257,11 +254,12 @@ final class PasswordViewController: UIViewController {
             }
             sheet.prefersGrabberVisible = true
         }
+        
         bottomSheetVC.onNicknameConfigured = { [weak self] nickname in
-            self?.userNickname = nickname
+            self?.nickname = nickname
             
             let attributes: [NSAttributedString.Key: Any] = [
-                .font: UIFont.body2 ?? UIFont.systemFont(ofSize: 14),
+                .font: UIFont.body2,
                 .foregroundColor: UIColor.appWhite,
                 .underlineStyle: NSUnderlineStyle.single.rawValue
             ]
@@ -273,7 +271,7 @@ final class PasswordViewController: UIViewController {
     
     @objc private func pushToWelcomeVC() {
         let welcomeController = WelcomeViewController()
-        welcomeController.nickname = self.userNickname
+        welcomeController.configureNickname(self.nickname)
         self.navigationController?.pushViewController(welcomeController, animated: true)
     }
 }

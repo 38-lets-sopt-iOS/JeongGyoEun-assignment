@@ -60,7 +60,7 @@ final class NicknameBottomSheetViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.backgroundColor = .appGray400?.withAlphaComponent(0.2)
+        view.backgroundColor = .appGray400.withAlphaComponent(0.2)
         view.layer.cornerRadius = 12
         view.layer.maskedCorners = [.layerMinXMinYCorner, .layerMaxXMinYCorner]
         view.clipsToBounds = true
@@ -92,7 +92,7 @@ final class NicknameBottomSheetViewController: UIViewController {
         completeButton.snp.makeConstraints {
             $0.leading.trailing.equalToSuperview().inset(22)
             $0.height.equalTo(56)
-            $0.bottom.equalTo(view.safeAreaLayoutGuide.snp.bottom).inset(24)
+            $0.bottom.equalTo(view.safeAreaLayoutGuide.snp.bottom).inset(13)
         }
     }
     

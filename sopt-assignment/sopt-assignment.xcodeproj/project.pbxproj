@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		701257EE2FA398A8008B5F25 /* Then in Frameworks */ = {isa = PBXBuildFile; productRef = 701257ED2FA398A8008B5F25 /* Then */; };
 		70472D622F9B837C00D3BFB1 /* SnapKit in Frameworks */ = {isa = PBXBuildFile; productRef = 70472D612F9B837C00D3BFB1 /* SnapKit */; };
 /* End PBXBuildFile section */
 
@@ -41,6 +42,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				70472D622F9B837C00D3BFB1 /* SnapKit in Frameworks */,
+				701257EE2FA398A8008B5F25 /* Then in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -84,6 +86,7 @@
 			name = "sopt-assignment";
 			packageProductDependencies = (
 				70472D612F9B837C00D3BFB1 /* SnapKit */,
+				701257ED2FA398A8008B5F25 /* Then */,
 			);
 			productName = "sopt-assignment";
 			productReference = 70472CED2F9B7B7C00D3BFB1 /* sopt-assignment.app */;
@@ -115,6 +118,7 @@
 			minimizedProjectReferenceProxies = 1;
 			packageReferences = (
 				70472D602F9B837C00D3BFB1 /* XCRemoteSwiftPackageReference "SnapKit" */,
+				701257EC2FA398A8008B5F25 /* XCRemoteSwiftPackageReference "Then" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 70472CEE2F9B7B7C00D3BFB1 /* Products */;
@@ -350,6 +354,14 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
+		701257EC2FA398A8008B5F25 /* XCRemoteSwiftPackageReference "Then" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/devxoul/Then.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 3.0.0;
+			};
+		};
 		70472D602F9B837C00D3BFB1 /* XCRemoteSwiftPackageReference "SnapKit" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/SnapKit/SnapKit.git";
@@ -361,6 +373,11 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		701257ED2FA398A8008B5F25 /* Then */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 701257EC2FA398A8008B5F25 /* XCRemoteSwiftPackageReference "Then" */;
+			productName = Then;
+		};
 		70472D612F9B837C00D3BFB1 /* SnapKit */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 70472D602F9B837C00D3BFB1 /* XCRemoteSwiftPackageReference "SnapKit" */;
